@@ -1,0 +1,21 @@
+<Window x:Class="CRUDApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CRUD App" Height="450" Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Vehicles">
+                <Frame NavigationUIVisibility="Hidden" Source="VehiclesPage.xaml"/>
+            </TabItem>
+            <TabItem Header="Pets">
+                <Frame NavigationUIVisibility="Hidden" Source="PetsPage.xaml"/>
+            </TabItem>
+            <TabItem Header="Residents">
+                <Frame NavigationUIVisibility="Hidden" Source="ResidentsPage.xaml"/>
+            </TabItem>
+            <TabItem Header="DatosResidente">
+                <Frame NavigationUIVisibility="Hidden" Source="DatosResidentePage.xaml"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
