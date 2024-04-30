@@ -6,7 +6,7 @@
     public string ApellidoMaterno { get; set; }
     public string Telefono { get; set; }
     public string Email { get; set; }
-    public string NumeroCasa { get; set; } // Definir NumeroCasa como tipo string
     public string Tipo { get; set; }
+    public string NumeroCasa { get; set; } 
     public DateTime FechaAlta { get; set; }
 }

@@ -1,46 +1,33 @@
 <Page x:Class="CRUDApp.DatosResidentePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="Datos del Residente" Width="450" Height="400">
-	<Grid Margin="20">
-		<StackPanel Margin="0,0,-459,-286">
-			<TextBlock Text="Seleccione UNO o MÁS por favor:" Margin="0,0,0,10"/>
-			<TextBlock Text="Buscar Residente y sus datos con:" Margin="0,0,0,10"/>
+      Title="Datos del Residente" Width="725" Height="648">
+    <Grid Margin="20">
+        <StackPanel Margin="0">
+            <TextBlock Text="Buscar Residente y sus datos con el número de casa:" Margin="0,0,0,10"/>
 
-			<!-- StackPanel for Nombre Completo -->
-			<StackPanel Orientation="Horizontal" Margin="0,5">
-				<CheckBox x:Name="cbNombreCompleto" Content="Nombre Completo:" IsChecked="True"/>
-				<TextBox x:Name="txtNombreCompleto" Margin="5,0" Width="200"/>
-			</StackPanel>
+            <!-- StackPanel for Numero de Casa -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <CheckBox x:Name="cbNumeroCasa" Content="Numero de Casa:" IsChecked="True"/>
+                <TextBox x:Name="txtNumeroCasa" Margin="5,0" Width="50"/>
+            </StackPanel>
 
-			<!-- StackPanel for Numero de Casa -->
-			<StackPanel Orientation="Horizontal" Margin="0,5">
-				<CheckBox x:Name="cbNumeroCasa" Content="Numero de Casa:" Margin="0,0,10,0"/>
-				<TextBox x:Name="txtNumeroCasa" Margin="5,0" Width="50"/>
-			</StackPanel>
+            <!-- Botón de Buscar Residente -->
+            <Button Content="Buscar" Click="BuscarResidente_Click" Margin="0,10,0,0" Width="100"/>
 
-			<!-- StackPanel for Numero de Teléfono -->
-			<StackPanel Orientation="Horizontal" Margin="0,5">
-				<CheckBox x:Name="cbNumeroTelefono" Content="Numero de Teléfono:" Margin="0,0,10,0"/>
-				<TextBox x:Name="txtNumeroTelefono" Margin="5,0" Width="100"/>
-			</StackPanel>
+            <!-- Resultados -->
+            <TextBlock x:Name="txtResultados" Margin="0,20,0,0"/>
 
-			<!-- Botón de Buscar Residente -->
-			<Button Content="Buscar" Click="BuscarResidente_Click" Margin="0,10,0,0" Width="100"/>
+            <!-- Buscar Vehículo y Mascota -->
+            <TextBlock Text="Buscar el vehículo y la mascota del residente por el número de casa:" Margin="0,20,0,10"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Número de Casa:" Margin="0,0,10,0"/>
+                <TextBox x:Name="txtNumeroCasaVehiculoMascota" Margin="0,0,10,0" Width="50"/>
+                <Button Content="Buscar" Click="BuscarVehiculoMascota_Click" Width="100"/>
+            </StackPanel>
 
-			<!-- Resultados -->
-			<TextBlock x:Name="txtResultados" Margin="0,20,0,0"/>
+            <Button Content="Limpiar" Click="BtnLimpiar_Click" Margin="0,10,0,0" Width="100"/>
 
-			<!-- Buscar Vehículo y Mascota -->
-			<TextBlock Text="Escribir el nombre del propietario para buscar el vehiculo y la moscota y mostrar sus datos correspondientes:" Margin="0,20,0,10"/>
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="Propietario:" Margin="0,0,10,0"/>
-				<TextBox x:Name="txtPropietario" Margin="0,0,10,0" Width="150"/>
-				<Button Content="Buscar" Click="BuscarVehiculoMascota_Click" Width="100"/>
-			</StackPanel>
-
-			<Button Content="Limpiar" Click="BtnLimpiar_Click" Margin="0,10,0,0" Width="100"/>
-
-		</StackPanel>
-	</Grid>
+        </StackPanel>
+    </Grid>
 </Page>

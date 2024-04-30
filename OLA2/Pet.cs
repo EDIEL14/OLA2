@@ -8,5 +8,6 @@
         public string Raza { get; set; }
         public int Edad { get; set; }
         public string Propietario { get; set; }
+        public string NumeroCasa { get; set; }
     }
 }

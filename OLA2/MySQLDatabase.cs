@@ -52,7 +52,7 @@ namespace CRUDApp
                 command.Parameters.AddWithValue("@Email", email);
                 command.Parameters.AddWithValue("@NumeroCasa", numeroCasa);
                 command.Parameters.AddWithValue("@Tipo", tipo);
-                command.Parameters.AddWithValue("@FechaAlta", DateTime.Now); // Establecer la fecha de alta como la fecha y hora actuales
+                command.Parameters.AddWithValue("@FechaAlta", fechaAlta);
                 connection.Open();
                 command.ExecuteNonQuery();
             }
@@ -94,7 +94,7 @@ namespace CRUDApp
             List<Vehicle> vehicles = new List<Vehicle>();
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT * FROM Vehiculos";
+                string query = "SELECT Id_Vehiculo, Marca, Modelo, Año, Color, Placa, NumeroCasa, Propietario FROM Vehiculos";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 connection.Open();
                 using (MySqlDataReader reader = command.ExecuteReader())
@@ -109,7 +109,8 @@ namespace CRUDApp
                             Anio = reader.GetInt32(3),
                             Color = reader.GetString(4),
                             Placa = reader.GetString(5),
-                            Propietario = reader.GetString(6) // Ajustamos para obtener el propietario como string
+                            NumeroCasa = reader.IsDBNull(6) ? "0" : reader.GetInt32(6).ToString(), // Convertir entero a cadena
+                            Propietario = reader.GetString(7)
                         };
                         vehicles.Add(vehicle);
                     }
@@ -118,11 +119,11 @@ namespace CRUDApp
             return vehicles;
         }
 
-        public void InsertVehicle(string marca, string modelo, int anio, string color, string placa, string propietario)
+        public void InsertVehicle(string marca, string modelo, int anio, string color, string placa, string propietario, string numeroCasa)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "INSERT INTO Vehiculos (Marca, Modelo, Año, Color, Placa, Propietario) VALUES (@Marca, @Modelo, @Año, @Color, @Placa, @Propietario)";
+                string query = "INSERT INTO Vehiculos (Marca, Modelo, Año, Color, Placa, Propietario, NumeroCasa) VALUES (@Marca, @Modelo, @Año, @Color, @Placa, @Propietario, @NumeroCasa)";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Marca", marca);
                 command.Parameters.AddWithValue("@Modelo", modelo);
@@ -130,16 +131,17 @@ namespace CRUDApp
                 command.Parameters.AddWithValue("@Color", color);
                 command.Parameters.AddWithValue("@Placa", placa);
                 command.Parameters.AddWithValue("@Propietario", propietario);
+                command.Parameters.AddWithValue("@NumeroCasa", numeroCasa);
                 connection.Open();
                 command.ExecuteNonQuery();
             }
         }
 
-        public void UpdateVehicle(int idVehiculo, string marca, string modelo, int anio, string color, string placa, string propietario)
+        public void UpdateVehicle(int idVehiculo, string marca, string modelo, int anio, string color, string placa, string propietario, string numeroCasa)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "UPDATE Vehiculos SET Marca = @Marca, Modelo = @Modelo, Año = @Anio, Color = @Color, Placa = @Placa, Propietario = @Propietario WHERE IdVehiculo = @IdVehiculo";
+                string query = "UPDATE Vehiculos SET Marca = @Marca, Modelo = @Modelo, Año = @Anio, Color = @Color, Placa = @Placa, Propietario = @Propietario, NumeroCasa = @NumeroCasa WHERE Id_Vehiculo = @IdVehiculo";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Marca", marca);
                 command.Parameters.AddWithValue("@Modelo", modelo);
@@ -147,6 +149,7 @@ namespace CRUDApp
                 command.Parameters.AddWithValue("@Color", color);
                 command.Parameters.AddWithValue("@Placa", placa);
                 command.Parameters.AddWithValue("@Propietario", propietario);
+                command.Parameters.AddWithValue("@NumeroCasa", numeroCasa);
                 command.Parameters.AddWithValue("@IdVehiculo", idVehiculo);
                 connection.Open();
                 command.ExecuteNonQuery();
@@ -157,7 +160,7 @@ namespace CRUDApp
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "DELETE FROM Vehiculos WHERE IdVehiculo = @IdVehiculo";
+                string query = "DELETE FROM Vehiculos WHERE Id_Vehiculo = @IdVehiculo"; // Usar el nombre de columna correcto
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@IdVehiculo", idVehiculo);
                 connection.Open();
@@ -184,7 +187,8 @@ namespace CRUDApp
                             Especie = reader.GetString(2),
                             Raza = reader.GetString(3),
                             Edad = reader.GetInt32(4),
-                            Propietario = reader.GetString(5)
+                            NumeroCasa = reader.GetInt32(5).ToString(), // Convertir el entero a cadena si es necesario
+                            Propietario = reader.GetString(6), // Se asume que Propietario es una cadena en la base de datos
                         };
                         pets.Add(pet);
                     }
@@ -193,33 +197,35 @@ namespace CRUDApp
             return pets;
         }
 
-        public void InsertPet(string nombre, string especie, string raza, int edad, string propietario)
+        public void InsertPet(string nombre, string especie, string raza, int edad, string propietario, string numeroCasa)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "INSERT INTO Mascotas (Nombre, Especie, Raza, Edad, Propietario) VALUES (@Nombre, @Especie, @Raza, @Edad, @Propietario)";
+                string query = "INSERT INTO Mascotas (Nombre, Especie, Raza, Edad, Propietario, NumeroCasa) VALUES (@Nombre, @Especie, @Raza, @Edad, @Propietario, @NumeroCasa)";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Nombre", nombre);
                 command.Parameters.AddWithValue("@Especie", especie);
                 command.Parameters.AddWithValue("@Raza", raza);
                 command.Parameters.AddWithValue("@Edad", edad);
                 command.Parameters.AddWithValue("@Propietario", propietario);
+                command.Parameters.AddWithValue("@NumeroCasa", numeroCasa);
                 connection.Open();
                 command.ExecuteNonQuery();
             }
         }
 
-        public void UpdatePet(int idMascota, string nombre, string especie, string raza, int edad, string propietario)
+        public void UpdatePet(int idMascota, string nombre, string especie, string raza, int edad, string propietario, string numeroCasa)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "UPDATE Mascotas SET Nombre = @Nombre, Especie = @Especie, Raza = @Raza, Edad = @Edad, Propietario = @Propietario WHERE IdMascota = @IdMascota";
+                string query = "UPDATE Mascotas SET Nombre = @Nombre, Especie = @Especie, Raza = @Raza, Edad = @Edad, Propietario = @Propietario, NumeroCasa = @NumeroCasa WHERE Id_Mascota = @IdMascota";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Nombre", nombre);
                 command.Parameters.AddWithValue("@Especie", especie);
                 command.Parameters.AddWithValue("@Raza", raza);
                 command.Parameters.AddWithValue("@Edad", edad);
                 command.Parameters.AddWithValue("@Propietario", propietario);
+                command.Parameters.AddWithValue("@NumeroCasa", numeroCasa);
                 command.Parameters.AddWithValue("@IdMascota", idMascota);
                 connection.Open();
                 command.ExecuteNonQuery();
@@ -230,7 +236,7 @@ namespace CRUDApp
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "DELETE FROM Mascotas WHERE IdMascota = @IdMascota";
+                string query = "DELETE FROM Mascotas WHERE Id_Mascota = @IdMascota";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@IdMascota", idMascota);
                 connection.Open();
@@ -410,7 +416,8 @@ namespace CRUDApp
                             Anio = reader.GetInt32(3),
                             Color = reader.GetString(4),
                             Placa = reader.GetString(5),
-                            Propietario = reader.GetString(6) // Ajustamos para obtener el propietario como string
+                            NumeroCasa = reader.GetInt32(6).ToString(), 
+                            Propietario = reader.GetString(7) 
                         };
                         vehicles.Add(vehicle);
                     }
@@ -439,7 +446,8 @@ namespace CRUDApp
                             Especie = reader.GetString(2),
                             Raza = reader.GetString(3),
                             Edad = reader.GetInt32(4),
-                            Propietario = reader.GetString(5)
+                            NumeroCasa = reader.GetInt32(5).ToString(), // Convertir a cadena
+                            Propietario = reader.GetString(6) // Ajustar si es necesario según tu implementación real
                         };
                         pets.Add(pet);
                     }

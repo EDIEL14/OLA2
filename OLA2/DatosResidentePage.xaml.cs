@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,31 +16,14 @@ namespace CRUDApp
 
         private void BuscarResidente_Click(object sender, RoutedEventArgs e)
         {
-            if (cbNombreCompleto.IsChecked == true)
+            int numeroCasa;
+            if (int.TryParse(txtNumeroCasa.Text, out numeroCasa))
             {
-                string nombreCompleto = txtNombreCompleto.Text;
-                MostrarDatosResidente(db.GetResidentePorNombreCompleto(nombreCompleto));
-            }
-            else if (cbNumeroCasa.IsChecked == true)
-            {
-                int numeroCasa;
-                if (int.TryParse(txtNumeroCasa.Text, out numeroCasa))
-                {
-                    MostrarDatosResidente(db.GetResidentePorNumeroCasa(numeroCasa));
-                }
-                else
-                {
-                    MessageBox.Show("Por favor, ingrese un número de casa válido.");
-                }
-            }
-            else if (cbNumeroTelefono.IsChecked == true)
-            {
-                string numeroTelefono = txtNumeroTelefono.Text;
-                MostrarDatosResidente(db.GetResidentesPorNumeroTelefono(numeroTelefono));
+                MostrarDatosResidente(db.GetResidentePorNumeroCasa(numeroCasa));
             }
             else
             {
-                MessageBox.Show("Por favor, seleccione una opción de búsqueda.");
+                MessageBox.Show("Por favor, ingrese un número de casa válido.");
             }
         }
 
@@ -61,29 +43,45 @@ namespace CRUDApp
             }
             else
             {
-                MessageBox.Show("No se encontró ningún residente con los criterios de búsqueda proporcionados.");
+                MessageBox.Show("No se encontró ningún residente con el número de casa proporcionado.");
             }
         }
 
         private void BuscarVehiculoMascota_Click(object sender, RoutedEventArgs e)
         {
-            string propietario = txtPropietario.Text;
-            MostrarDatosVehiculo(db.GetVehiclesByOwner(propietario));
-            MostrarDatosMascota(db.GetPetsByOwner(propietario));
+            int numeroCasa;
+            if (int.TryParse(txtNumeroCasa.Text, out numeroCasa))
+            {
+                var residente = db.GetResidentePorNumeroCasa(numeroCasa);
+                if (residente != null)
+                {
+                    string propietario = residente.Nombre; 
+                    MostrarDatosVehiculo(db.GetVehiclesByOwner(propietario));
+                    MostrarDatosMascota(db.GetPetsByOwner(propietario));
+                }
+                else
+                {
+                    MessageBox.Show("No se encontró ningún residente con el número de casa proporcionado.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, ingrese un número de casa válido.");
+            }
         }
 
         private void MostrarDatosVehiculo(List<Vehicle> vehiculos)
         {
             if (vehiculos.Any())
             {
-                string resultado = "Datos del Vehículo:\n";
+                string resultado = "Datos del Vehículo:\n\n";
                 foreach (var vehiculo in vehiculos)
                 {
-                    resultado += $"Marca: {vehiculo.Marca}, " +
-                                  $"Modelo: {vehiculo.Modelo}, " +
-                                  $"Año: {vehiculo.Anio}, " +
-                                  $"Color: {vehiculo.Color}, " +
-                                  $"Placa: {vehiculo.Placa}\n";
+                    resultado += $"Marca: {vehiculo.Marca}\n" +
+                                  $"Modelo: {vehiculo.Modelo}\n" +
+                                  $"Año: {vehiculo.Anio}\n" +
+                                  $"Color: {vehiculo.Color}\n" +
+                                  $"Placa: {vehiculo.Placa}\n\n";
                 }
                 txtResultados.Text += resultado;
             }
@@ -100,9 +98,9 @@ namespace CRUDApp
                 string resultado = "Datos de la Mascota:\n";
                 foreach (var mascota in mascotas)
                 {
-                    resultado += $"Nombre: {mascota.Nombre}, " +
-                                  $"Especie: {mascota.Especie}, " +
-                                  $"Raza: {mascota.Raza}, " +
+                    resultado += $"Nombre: {mascota.Nombre}\n" +
+                                  $"Especie: {mascota.Especie}\n" +
+                                  $"Raza: {mascota.Raza}\n" +
                                   $"Edad: {mascota.Edad}\n";
                 }
                 txtResultados.Text += resultado;
@@ -115,15 +113,10 @@ namespace CRUDApp
 
         private void LimpiarDatos()
         {
-            // Limpiar campos de entrada para residente
-            txtNombreCompleto.Clear();
+            // Limpiar campo de entrada para número de casa
             txtNumeroCasa.Clear();
-            txtNumeroTelefono.Clear();
 
-            // Limpiar campos de entrada para vehículo y mascota
-            txtPropietario.Clear();
-
-            // Restaurar resultados para todos los datos
+            // Restaurar resultados
             txtResultados.Text = "";
         }
 

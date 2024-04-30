@@ -30,16 +30,20 @@
 			<TextBox x:Name="txtNumeroCasa" Width="51" Margin="5"/>
 		</StackPanel>
 
-		<StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5">
-			<TextBlock Text="Tipo:" VerticalAlignment="Center"/>
-			<TextBox x:Name="txtTipo" Width="98" Margin="5"/>
-		</StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Tipo:" VerticalAlignment="Center" Margin="5"/>
+            <ComboBox x:Name="cmbTipo" Width="100" Margin="5">
+                <ComboBoxItem Content="Propietario"/>
+                <ComboBoxItem Content="Arrendatario"/>
+            </ComboBox>
+        </StackPanel>
 
-		<StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5">
 			<Button Content="Agregar Residente" Click="AgregarResidente_Click" Width="150" Margin="5"/>
 			<Button Content="Actualizar Residente" Click="ActualizarResidente_Click" Width="150" Margin="5"/>
 			<Button Content="Eliminar Residente" Click="EliminarResidente_Click" Width="150" Margin="5"/>
-		</StackPanel>
+            <Button Content="Limpiar Campos" Click="LimpiarCampos_Click" Width="150" Margin="5"/>
+        </StackPanel>
 
 		<DataGrid x:Name="dgResidents" Grid.Row="4" Margin="5,5,45,5"/>
 	</Grid>
